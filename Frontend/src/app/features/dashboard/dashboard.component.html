@@ -1,0 +1,50 @@
+<app-page-header
+  title="Mon espace"
+  subtitle="Bienvenue sur MR CHEIK — suivez votre activité"
+/>
+
+@if (errorMessage) {
+  <div class="alert alert-danger">{{ errorMessage }}</div>
+}
+
+<div class="row g-4">
+  <div class="col-md-6 col-xl-3">
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#1867c022;color:#1867c0"><i class="bi bi-receipt"></i></div>
+      <div><p class="stat-label">Commandes</p><h2 class="stat-value">{{ stats.orders }}</h2></div>
+    </div>
+  </div>
+  <div class="col-md-6 col-xl-3">
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#48a9a622;color:#48a9a6"><i class="bi bi-calendar-check"></i></div>
+      <div><p class="stat-label">Abonnements</p><h2 class="stat-value">{{ stats.subscriptions }}</h2></div>
+    </div>
+  </div>
+  <div class="col-md-6 col-xl-3">
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#ef534f22;color:#ef534f"><i class="bi bi-credit-card"></i></div>
+      <div><p class="stat-label">Paiements</p><h2 class="stat-value">{{ stats.payments }}</h2></div>
+    </div>
+  </div>
+  <div class="col-md-6 col-xl-3">
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#8f4de822;color:#8f4de8"><i class="bi bi-tags"></i></div>
+      <div><p class="stat-label">Forfaits</p><h2 class="stat-value">{{ stats.plans }}</h2></div>
+    </div>
+  </div>
+</div>
+
+<div class="workflow-card card mt-4">
+  <div class="card-body">
+    <h3 class="h5 mb-3">Parcours d'achat</h3>
+    <div class="workflow-steps">
+      <a routerLink="/plans" class="workflow-step">1. Choisir un forfait</a>
+      <i class="bi bi-chevron-right"></i>
+      <a routerLink="/orders/new" class="workflow-step">2. Créer une commande</a>
+      <i class="bi bi-chevron-right"></i>
+      <a routerLink="/subscriptions/new" class="workflow-step">3. Activer l'abonnement</a>
+      <i class="bi bi-chevron-right"></i>
+      <a routerLink="/payments/new" class="workflow-step">4. Enregistrer le paiement</a>
+    </div>
+  </div>
+</div>

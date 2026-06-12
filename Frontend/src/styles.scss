@@ -1,0 +1,83 @@
+@use 'bootstrap/scss/bootstrap';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+:root {
+  --mc-primary: #1867c0;
+  --mc-primary-dark: #1f5592;
+  --mc-secondary: #48a9a6;
+  --mc-accent: #ef534f;
+  --mc-purple: #8f4de8;
+  --mc-orange: #ff9a1f;
+  --mc-bg: #f5f7fb;
+  --mc-surface: #ffffff;
+  --mc-text: #1a1a2e;
+  --mc-muted: #6b7280;
+  --mc-radius: 16px;
+  --mc-shadow: 0 8px 30px rgba(24, 103, 192, 0.08);
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--mc-bg);
+  color: var(--mc-text);
+}
+
+a {
+  color: var(--mc-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--mc-primary-dark);
+}
+
+.btn-primary {
+  --bs-btn-bg: var(--mc-primary);
+  --bs-btn-border-color: var(--mc-primary);
+  --bs-btn-hover-bg: var(--mc-primary-dark);
+  --bs-btn-hover-border-color: var(--mc-primary-dark);
+}
+
+.btn-accent {
+  background: linear-gradient(135deg, var(--mc-accent), #ff7043);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+}
+
+.btn-accent:hover {
+  color: #fff;
+  opacity: 0.92;
+}
+
+.card {
+  border: 1px solid rgba(24, 103, 192, 0.08);
+  border-radius: var(--mc-radius);
+  box-shadow: var(--mc-shadow);
+}
+
+.table thead th {
+  background: #eef4fb;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--mc-muted);
+  border-bottom: none;
+}
+
+.badge {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.section-subtitle {
+  color: var(--mc-muted);
+  margin-bottom: 1.5rem;
+}

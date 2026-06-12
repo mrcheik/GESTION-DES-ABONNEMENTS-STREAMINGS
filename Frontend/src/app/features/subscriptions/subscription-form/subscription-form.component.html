@@ -1,0 +1,42 @@
+<app-page-header
+  [title]="isEditMode ? 'Modifier l\'abonnement' : 'Nouvel abonnement'"
+  subtitle="Activez votre forfait MR CHEIK"
+/>
+
+<div class="card form-card">
+  <div class="card-body p-4">
+    @if (errorMessage) { <div class="alert alert-danger">{{ errorMessage }}</div> }
+    @if (successMessage) { <div class="alert alert-success">{{ successMessage }}</div> }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="mb-3">
+        <label class="form-label" for="plan">Forfait</label>
+        <select id="plan" class="form-select" formControlName="plan">
+          <option value="" disabled>Sélectionner un forfait</option>
+          @for (plan of plans; track plan.id) {
+            <option [value]="plan.id">{{ plan.name }} ({{ plan.duration_days }} jours)</option>
+          }
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="end_date">Date de fin</label>
+        <input id="end_date" type="datetime-local" class="form-control" formControlName="end_date" />
+        <small class="text-muted">Calculée automatiquement selon la durée du forfait.</small>
+      </div>
+      <div class="mb-4">
+        <label class="form-label" for="status">Statut</label>
+        <select id="status" class="form-select" formControlName="status">
+          @for (status of statusOptions; track status) {
+            <option [value]="status">{{ labelStatus(status) }}</option>
+          }
+        </select>
+      </div>
+      <div class="d-flex gap-2">
+        <button class="btn btn-accent" type="submit">
+          {{ isEditMode ? 'Enregistrer' : 'Créer l\'abonnement' }}
+        </button>
+        <a routerLink="/subscriptions" class="btn btn-outline-secondary">Annuler</a>
+      </div>
+    </form>
+  </div>
+</div>

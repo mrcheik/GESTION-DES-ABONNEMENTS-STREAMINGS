@@ -1,0 +1,35 @@
+<header class="mc-header">
+  <nav class="mc-nav container-fluid">
+    <a class="mc-brand" routerLink="/accueil">
+      <span class="mc-brand__logo">MC</span>
+      <span class="mc-brand__text">MR <strong>CHEIK</strong></span>
+    </a>
+
+    <button
+      class="navbar-toggler d-lg-none"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#mcNav"
+      aria-label="Menu"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mcNav">
+      <ul class="mc-nav__links">
+        <li>
+          <a routerLink="/accueil" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Accueil</a>
+        </li>
+        <li><a routerLink="/plans" routerLinkActive="active">Forfaits</a></li>
+        <li><a routerLink="/providers" routerLinkActive="active">Fournisseurs</a></li>
+        <li><a routerLink="/orders" routerLinkActive="active">Commandes</a></li>
+        <li><a routerLink="/subscriptions" routerLinkActive="active">Abonnements</a></li>
+        <li><a routerLink="/payments" routerLinkActive="active">Paiements</a></li>
+        <li><a routerLink="/dashboard" routerLinkActive="active">Espace</a></li>
+      </ul>
+      <button class="btn btn-outline-danger btn-sm" type="button" (click)="logout()">
+        <i class="bi bi-box-arrow-right me-1"></i>Déconnexion
+      </button>
+    </div>
+  </nav>
+</header>

@@ -1,0 +1,23 @@
+.provider-card {
+  border-radius: var(--mc-radius);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 36px rgba(24, 103, 192, 0.12);
+  }
+}
+
+.provider-card__logo {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  background: #f0f4fa;
+}
+
+.empty-state {
+  border: 1px dashed #cbd5e1;
+  border-radius: var(--mc-radius);
+}

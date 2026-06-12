@@ -1,0 +1,25 @@
+<article class="spu-card">
+  <div class="spu-card__header">
+    <img class="spu-card__logo" [src]="displayLogo" [alt]="providerName" />
+    <div>
+      <p class="spu-card__provider">{{ providerName }}</p>
+      <h3 class="spu-card__title">{{ plan.name }}</h3>
+    </div>
+  </div>
+  <div class="spu-card__price">
+    <span class="amount">{{ plan.price }}</span>
+    <span class="currency">FCFA / mois</span>
+  </div>
+  <ul class="spu-card__features">
+    <li><i class="bi bi-check-circle-fill"></i> Durée {{ plan.duration_days }} jours</li>
+    <li><i class="bi bi-check-circle-fill"></i> Livraison instantanée</li>
+    <li><i class="bi bi-check-circle-fill"></i> Support 24/7</li>
+  </ul>
+  <a
+    class="btn btn-accent w-100"
+    [routerLink]="['/orders/new']"
+    [queryParams]="{ planId: plan.id, amount: plan.price, provider: providerName }"
+  >
+    Acheter maintenant
+  </a>
+</article>

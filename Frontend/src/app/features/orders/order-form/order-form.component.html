@@ -1,0 +1,42 @@
+<app-page-header
+  [title]="isEditMode ? 'Modifier la commande' : 'Nouvelle commande'"
+  [subtitle]="providerLabel ? 'Forfait ' + providerLabel : 'Créez une commande pour un forfait MR CHEIK'"
+/>
+
+<div class="card form-card">
+  <div class="card-body p-4">
+    @if (errorMessage) { <div class="alert alert-danger">{{ errorMessage }}</div> }
+    @if (successMessage) { <div class="alert alert-success">{{ successMessage }}</div> }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="mb-3">
+        <label class="form-label" for="plan">Forfait</label>
+        <select id="plan" class="form-select" formControlName="plan">
+          <option value="" disabled>Sélectionner un forfait</option>
+          @for (plan of plans; track plan.id) {
+            <option [value]="plan.id">{{ plan.name }} — {{ plan.price }} FCFA</option>
+          }
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="amount">Montant (FCFA)</label>
+        <input id="amount" type="text" class="form-control" formControlName="amount" />
+      </div>
+      <div class="mb-4">
+        <label class="form-label" for="status">Statut</label>
+        <select id="status" class="form-select" formControlName="status">
+          @for (status of statusOptions; track status) {
+            <option [value]="status">{{ labelStatus(status) }}</option>
+          }
+        </select>
+        <small class="text-muted">Mettez « Payée » pour activer l'abonnement ensuite.</small>
+      </div>
+      <div class="d-flex gap-2">
+        <button class="btn btn-accent" type="submit">
+          {{ isEditMode ? 'Enregistrer' : 'Créer la commande' }}
+        </button>
+        <a routerLink="/orders" class="btn btn-outline-secondary">Annuler</a>
+      </div>
+    </form>
+  </div>
+</div>

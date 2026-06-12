@@ -1,0 +1,47 @@
+<app-page-header title="Mes abonnements" subtitle="Gérez vos abonnements actifs">
+  <a routerLink="/subscriptions/new" class="btn btn-accent">
+    <i class="bi bi-plus-lg me-1"></i>Nouvel abonnement
+  </a>
+</app-page-header>
+
+@if (errorMessage) {
+  <div class="alert alert-danger">{{ errorMessage }}</div>
+} @else {
+  <div class="table-responsive card">
+    <table class="table table-hover mb-0 align-middle">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Forfait</th>
+          <th>Début</th>
+          <th>Fin</th>
+          <th>Statut</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (sub of subscriptions; track sub.id) {
+          <tr>
+            <td>{{ sub.id }}</td>
+            <td>{{ getPlanName(sub.plan) }}</td>
+            <td>{{ sub.start_date | date: 'short' }}</td>
+            <td>{{ sub.end_date | date: 'short' }}</td>
+            <td>
+              <span class="badge text-bg-{{ statusClass(sub.status) }}">{{ labelStatus(sub.status) }}</span>
+            </td>
+            <td class="text-end d-flex gap-1 justify-content-end">
+              @if (sub.status === 'active') {
+                <a class="btn btn-sm btn-outline-success" [routerLink]="['/payments/new']" [queryParams]="{ subscriptionId: sub.id }">Payer</a>
+              }
+              <a class="btn btn-sm btn-outline-secondary" [routerLink]="['/subscriptions', sub.id, 'edit']">Modifier</a>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6" class="text-center text-muted py-4">Aucun abonnement. Créez-en un après une commande payée.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

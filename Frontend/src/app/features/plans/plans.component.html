@@ -1,0 +1,22 @@
+<app-page-header
+  title="Forfaits"
+  subtitle="Toutes les offres disponibles sur MR CHEIK"
+/>
+
+@if (errorMessage) {
+  <div class="alert alert-danger">{{ errorMessage }}</div>
+} @else if (plans.length === 0) {
+  <div class="card text-center py-5 text-muted">Aucun forfait disponible pour le moment.</div>
+} @else {
+  <div class="row g-4">
+    @for (plan of plans; track plan.id) {
+      <div class="col-md-6 col-lg-4 col-xl-3">
+        <app-plan-card
+          [plan]="plan"
+          [providerName]="getProviderName(plan)"
+          [logoUrl]="getLogoUrl(plan)"
+        />
+      </div>
+    }
+  </div>
+}

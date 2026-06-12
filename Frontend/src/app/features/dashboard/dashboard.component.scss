@@ -1,0 +1,59 @@
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: var(--mc-radius);
+  background: var(--mc-surface);
+  border: 1px solid rgba(24, 103, 192, 0.08);
+}
+
+.stat-icon {
+  width: 3rem;
+  height: 3rem;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  font-size: 1.25rem;
+}
+
+.stat-label {
+  margin: 0;
+  color: var(--mc-muted);
+  font-size: 0.9rem;
+}
+
+.stat-value {
+  margin: 0.15rem 0 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.workflow-card {
+  border-radius: var(--mc-radius);
+}
+
+.workflow-steps {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.workflow-step {
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  background: rgba(24, 103, 192, 0.08);
+  color: var(--mc-primary);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+
+  &:hover {
+    background: rgba(24, 103, 192, 0.15);
+  }
+}
+
+.workflow-steps i {
+  color: var(--mc-muted);
+}

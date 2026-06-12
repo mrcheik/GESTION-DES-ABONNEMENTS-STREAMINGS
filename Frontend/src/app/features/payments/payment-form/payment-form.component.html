@@ -1,0 +1,53 @@
+<app-page-header
+  [title]="isEditMode ? 'Modifier le paiement' : 'Nouveau paiement'"
+  subtitle="Enregistrez votre transaction MR CHEIK"
+/>
+
+<div class="card form-card">
+  <div class="card-body p-4">
+    @if (errorMessage) { <div class="alert alert-danger">{{ errorMessage }}</div> }
+    @if (successMessage) { <div class="alert alert-success">{{ successMessage }}</div> }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="mb-3">
+        <label class="form-label" for="subscription">Abonnement</label>
+        <select id="subscription" class="form-select" formControlName="subscription">
+          <option value="" disabled>Sélectionner un abonnement</option>
+          @for (sub of subscriptions; track sub.id) {
+            <option [value]="sub.id">Abonnement #{{ sub.id }} — {{ labelStatus(sub.status) }}</option>
+          }
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="amount">Montant (FCFA)</label>
+        <input id="amount" type="text" class="form-control" formControlName="amount" />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="payment_method">Méthode de paiement</label>
+        <select id="payment_method" class="form-select" formControlName="payment_method">
+          @for (method of methodOptions; track method) {
+            <option [value]="method">{{ labelMethod(method) }}</option>
+          }
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="status">Statut</label>
+        <select id="status" class="form-select" formControlName="status">
+          @for (status of statusOptions; track status) {
+            <option [value]="status">{{ labelStatus(status) }}</option>
+          }
+        </select>
+      </div>
+      <div class="mb-4">
+        <label class="form-label" for="transaction_id">ID de transaction</label>
+        <input id="transaction_id" type="text" class="form-control" formControlName="transaction_id" />
+      </div>
+      <div class="d-flex gap-2">
+        <button class="btn btn-accent" type="submit">
+          {{ isEditMode ? 'Enregistrer' : 'Enregistrer le paiement' }}
+        </button>
+        <a routerLink="/payments" class="btn btn-outline-secondary">Annuler</a>
+      </div>
+    </form>
+  </div>
+</div>
