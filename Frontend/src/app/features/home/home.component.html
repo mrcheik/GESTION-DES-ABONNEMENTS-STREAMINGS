@@ -1,25 +1,58 @@
 <section class="hero">
   <div class="hero__content">
-    <span class="hero__badge">MR CHEIK</span>
-    <h1>Abonnements premium partagés à prix inférieur</h1>
+    <span class="hero__badge">MR CHEIK Streaming Hub</span>
+    <h1>Abonnements premium, gestion simple et suivi instantané.</h1>
     <p>
-      Netflix, YouTube Premium, Spotify et plus encore — profitez du streaming
-      en HD à moindre coût avec livraison instantanée.
+      Centralisez vos commandes, abonnements et paiements dans une interface claire,
+      rapide et prête pour un usage quotidien.
     </p>
     <div class="hero__actions">
       <a routerLink="/plans" class="btn btn-accent btn-lg">Voir les offres</a>
-      <a routerLink="/dashboard" class="btn btn-outline-primary btn-lg">Mon espace</a>
+      <a routerLink="/dashboard" class="btn btn-soft btn-lg">Mon dashboard</a>
     </div>
   </div>
-  <div class="hero__brands">
-    @for (provider of providers; track provider.id) {
+
+  <div class="hero__panel">
+    <div class="hero__panel-header">
+      <span>Vue utilisateur</span>
+      <strong>Temps réel</strong>
+    </div>
+    <div class="hero-stats">
+      <a routerLink="/orders" class="hero-stat">
+        <span class="hero-stat__icon"><i class="bi bi-receipt"></i></span>
+        <span class="hero-stat__label">Commandes</span>
+        <strong>{{ stats.orders }}</strong>
+      </a>
+      <a routerLink="/subscriptions" class="hero-stat">
+        <span class="hero-stat__icon"><i class="bi bi-calendar-check"></i></span>
+        <span class="hero-stat__label">Abonnements</span>
+        <strong>{{ stats.subscriptions }}</strong>
+      </a>
+      <a routerLink="/payments" class="hero-stat">
+        <span class="hero-stat__icon"><i class="bi bi-credit-card"></i></span>
+        <span class="hero-stat__label">Paiements</span>
+        <strong>{{ stats.payments }}</strong>
+      </a>
+      <a routerLink="/plans" class="hero-stat">
+        <span class="hero-stat__icon"><i class="bi bi-tags"></i></span>
+        <span class="hero-stat__label">Forfaits</span>
+        <strong>{{ stats.plans }}</strong>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="brand-strip" aria-label="Fournisseurs disponibles">
+  @for (provider of providers; track provider.id) {
+    <a class="brand-chip" routerLink="/providers">
       <img
         [src]="getProviderLogo(provider)"
         [alt]="provider.name"
-        class="hero__brand-logo"
+        (error)="onLogoError($event)"
       />
-    }
-  </div>
+      <span>{{ provider.name }}</span>
+    </a>
+  }
 </section>
 
 <section class="features">
@@ -27,7 +60,7 @@
     @for (feature of features; track feature.title) {
       <div class="col-md-6 col-lg-3">
         <div class="feature-card">
-          <div class="feature-card__icon" [style.background]="feature.color + '22'" [style.color]="feature.color">
+          <div class="feature-card__icon" [style.background]="feature.color + '16'" [style.color]="feature.color">
             <i class="bi" [class]="feature.icon"></i>
           </div>
           <h3>{{ feature.title }}</h3>
@@ -39,7 +72,7 @@
 </section>
 
 <section class="catalog">
-  <div class="d-flex justify-content-between align-items-end flex-wrap gap-2 mb-3">
+  <div class="section-heading">
     <div>
       <h2 class="section-title">Offres populaires</h2>
       <p class="section-subtitle mb-0">Choisissez votre abonnement et commandez en un clic</p>
@@ -50,8 +83,8 @@
   @if (errorMessage) {
     <div class="alert alert-danger">{{ errorMessage }}</div>
   } @else if (!loading && plans.length === 0) {
-    <div class="empty-catalog card text-center py-5">
-      <p class="text-muted mb-0">Aucun forfait disponible. Lancez la commande seed côté backend.</p>
+    <div class="empty-catalog text-center py-5">
+      <p class="text-muted mb-0">Aucun forfait disponible. Ajoutez-en depuis la page Forfaits.</p>
     </div>
   } @else {
     <div class="row g-4">
@@ -69,13 +102,17 @@
 </section>
 
 <section class="how-it-works">
-  <h2 class="section-title text-center">Comment ça marche ?</h2>
-  <p class="section-subtitle text-center">3 étapes simples pour profiter de votre abonnement</p>
+  <div class="section-heading section-heading--center">
+    <div>
+      <h2 class="section-title">Comment ça marche ?</h2>
+      <p class="section-subtitle mb-0">3 étapes simples pour profiter de votre abonnement</p>
+    </div>
+  </div>
   <div class="row g-4">
     <div class="col-md-4">
       <div class="step-card">
         <span class="step-card__num">1</span>
-        <h3>Choisissez & payez</h3>
+        <h3>Choisissez et payez</h3>
         <p>Sélectionnez un forfait et créez votre commande.</p>
       </div>
     </div>
@@ -90,7 +127,7 @@
       <div class="step-card">
         <span class="step-card__num">3</span>
         <h3>Profitez</h3>
-        <p>Connectez-vous et streamer sans limite.</p>
+        <p>Connectez-vous et streamez sans limite.</p>
       </div>
     </div>
   </div>

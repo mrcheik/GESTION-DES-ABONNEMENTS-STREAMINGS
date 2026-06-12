@@ -1,6 +1,6 @@
 <app-page-header
   title="Mon espace"
-  subtitle="Bienvenue sur MR CHEIK — suivez votre activité"
+  subtitle="Bienvenue sur MR CHEIK - suivez votre activité"
 />
 
 @if (errorMessage) {
@@ -9,28 +9,28 @@
 
 <div class="row g-4">
   <div class="col-md-6 col-xl-3">
-    <div class="stat-card">
-      <div class="stat-icon" style="background:#1867c022;color:#1867c0"><i class="bi bi-receipt"></i></div>
+    <a routerLink="/orders" class="stat-card">
+      <div class="stat-icon stat-icon--blue"><i class="bi bi-receipt"></i></div>
       <div><p class="stat-label">Commandes</p><h2 class="stat-value">{{ stats.orders }}</h2></div>
-    </div>
+    </a>
   </div>
   <div class="col-md-6 col-xl-3">
-    <div class="stat-card">
-      <div class="stat-icon" style="background:#48a9a622;color:#48a9a6"><i class="bi bi-calendar-check"></i></div>
+    <a routerLink="/subscriptions" class="stat-card">
+      <div class="stat-icon stat-icon--cyan"><i class="bi bi-calendar-check"></i></div>
       <div><p class="stat-label">Abonnements</p><h2 class="stat-value">{{ stats.subscriptions }}</h2></div>
-    </div>
+    </a>
   </div>
   <div class="col-md-6 col-xl-3">
-    <div class="stat-card">
-      <div class="stat-icon" style="background:#ef534f22;color:#ef534f"><i class="bi bi-credit-card"></i></div>
+    <a routerLink="/payments" class="stat-card">
+      <div class="stat-icon stat-icon--red"><i class="bi bi-credit-card"></i></div>
       <div><p class="stat-label">Paiements</p><h2 class="stat-value">{{ stats.payments }}</h2></div>
-    </div>
+    </a>
   </div>
   <div class="col-md-6 col-xl-3">
-    <div class="stat-card">
-      <div class="stat-icon" style="background:#8f4de822;color:#8f4de8"><i class="bi bi-tags"></i></div>
+    <a routerLink="/plans" class="stat-card">
+      <div class="stat-icon stat-icon--violet"><i class="bi bi-tags"></i></div>
       <div><p class="stat-label">Forfaits</p><h2 class="stat-value">{{ stats.plans }}</h2></div>
-    </div>
+    </a>
   </div>
 </div>
 

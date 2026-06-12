@@ -7,14 +7,14 @@ import { Order, OrderPayload } from '../models/order.model';
 @Injectable({ providedIn: 'root' })
 export class OrderService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = `${environment.apiUrl}/orders`;
+  private readonly baseUrl = `${environment.apiUrl}/orders/`;
 
   getAll(): Observable<Order[]> {
     return this.http.get<Order[]>(this.baseUrl);
   }
 
   getById(id: number): Observable<Order> {
-    return this.http.get<Order>(`${this.baseUrl}/${id}/`);
+    return this.http.get<Order>(`${this.baseUrl}${id}/`);
   }
 
   create(payload: OrderPayload): Observable<Order> {
@@ -22,6 +22,10 @@ export class OrderService {
   }
 
   update(id: number, payload: Partial<OrderPayload>): Observable<Order> {
-    return this.http.patch<Order>(`${this.baseUrl}/${id}/`, payload);
+    return this.http.patch<Order>(`${this.baseUrl}${id}/`, payload);
+  }
+
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}${id}/`);
   }
 }

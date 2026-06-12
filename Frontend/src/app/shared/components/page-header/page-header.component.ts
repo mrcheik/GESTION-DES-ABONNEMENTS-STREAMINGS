@@ -22,18 +22,19 @@ import { Component, Input } from '@angular/core';
         justify-content: space-between;
         gap: 1rem;
         flex-wrap: wrap;
+        padding: 0.2rem 0;
       }
 
       .page-title {
         margin: 0;
-        font-size: 1.75rem;
-        font-weight: 700;
-        color: #0f172a;
+        font-size: clamp(1.55rem, 2vw, 2rem);
+        font-weight: 850;
+        color: var(--mc-text);
       }
 
       .page-subtitle {
         margin: 0.35rem 0 0;
-        color: #64748b;
+        color: var(--mc-muted);
       }
     `,
   ],

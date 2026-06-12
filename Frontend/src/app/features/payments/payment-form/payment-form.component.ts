@@ -5,6 +5,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { PageHeaderComponent } from '../../../shared/components/page-header/page-header.component';
 import { PaymentService } from '../../../core/services/payment.service';
 import { SubscriptionService } from '../../../core/services/subscription.service';
@@ -52,12 +53,20 @@ export class PaymentFormComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    this.form.controls.subscription.valueChanges.subscribe((subscriptionId) => {
+      this.updateAmountFromSubscription(Number(subscriptionId));
+    });
+
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam) {
       this.isEditMode = true;
       this.paymentId = Number(idParam);
-      this.paymentService.getById(this.paymentId).subscribe({
-        next: (payment) => {
+      forkJoin({
+        subscriptions: this.subscriptionService.getAll(),
+        payment: this.paymentService.getById(this.paymentId),
+      }).subscribe({
+        next: ({ subscriptions, payment }) => {
+          this.subscriptions = subscriptions;
           this.form.patchValue({
             subscription: String(payment.subscription),
             amount: payment.amount,
@@ -81,10 +90,21 @@ export class PaymentFormComponent implements OnInit {
           amount: amount ?? '',
           transaction_id: this.generateTransactionId(),
         });
+        if (!amount) {
+          this.updateAmountFromSubscription(Number(subId));
+        }
       } else {
         this.form.patchValue({ transaction_id: this.generateTransactionId() });
       }
     });
+  }
+
+  private updateAmountFromSubscription(subscriptionId: number): void {
+    const subscription = this.subscriptions.find((sub) => sub.id === subscriptionId);
+    const price = subscription?.plan_details?.price;
+    if (price) {
+      this.form.patchValue({ amount: price }, { emitEvent: false });
+    }
   }
 
   private generateTransactionId(): string {

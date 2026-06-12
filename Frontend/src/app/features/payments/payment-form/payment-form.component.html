@@ -14,7 +14,7 @@
         <select id="subscription" class="form-select" formControlName="subscription">
           <option value="" disabled>Sélectionner un abonnement</option>
           @for (sub of subscriptions; track sub.id) {
-            <option [value]="sub.id">Abonnement #{{ sub.id }} — {{ labelStatus(sub.status) }}</option>
+            <option [value]="sub.id">Abonnement #{{ sub.id }} - {{ labelStatus(sub.status) }}</option>
           }
         </select>
       </div>
@@ -42,6 +42,9 @@
         <label class="form-label" for="transaction_id">ID de transaction</label>
         <input id="transaction_id" type="text" class="form-control" formControlName="transaction_id" />
       </div>
+      @if (form.touched && form.invalid) {
+        <small class="text-danger d-block mb-3">Veuillez renseigner tous les champs avec un montant et une transaction valides.</small>
+      }
       <div class="d-flex gap-2">
         <button class="btn btn-accent" type="submit">
           {{ isEditMode ? 'Enregistrer' : 'Enregistrer le paiement' }}

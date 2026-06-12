@@ -1,14 +1,17 @@
 import { environment } from '../../../environments/environment';
 
+export const DEFAULT_LOGO_URL = '/assets/brands/default.svg';
+
 const BRAND_LOGOS: Record<string, string> = {
-  netflix: 'brands/netflix.png',
-  'youtube premium': 'assets/brands/youtube.svg',
-  youtube: 'assets/brands/youtube.svg',
-  spotify: 'brands/spotify.png',
-  'disney+': 'assets/brands/disney.svg',
-  disney: 'assets/brands/disney.svg',
-  'canal+': 'assets/brands/canal.svg',
-  canal: 'assets/brands/canal.svg',
+  netflix: '/assets/brands/netflix.svg',
+  'youtube premium': '/assets/brands/youtube.svg',
+  youtube: '/assets/brands/youtube.svg',
+  spotify: '/assets/brands/spotify.svg',
+  'disney+': '/assets/brands/disney.svg',
+  disney: '/assets/brands/disney.svg',
+  'canal+': '/assets/brands/canal.svg',
+  canal: '/assets/brands/canal.svg',
+  default: DEFAULT_LOGO_URL,
 };
 
 export function resolveLogoUrl(
@@ -18,6 +21,9 @@ export function resolveLogoUrl(
   if (logoUrl) {
     if (logoUrl.startsWith('http')) {
       return logoUrl;
+    }
+    if (logoUrl.startsWith('/assets/') || logoUrl.startsWith('assets/')) {
+      return logoUrl.startsWith('/') ? logoUrl : `/${logoUrl}`;
     }
     if (logoUrl.startsWith('/')) {
       return `${environment.mediaUrl}${logoUrl}`;
@@ -37,5 +43,5 @@ export function resolveLogoUrl(
     }
   }
 
-  return 'assets/brands/default.svg';
+  return DEFAULT_LOGO_URL;
 }

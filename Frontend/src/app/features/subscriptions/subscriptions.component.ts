@@ -45,4 +45,14 @@ export class SubscriptionsComponent implements OnInit {
   getPlanName(planId: number): string {
     return this.planMap.get(planId) ?? `Forfait #${planId}`;
   }
+
+  delete(subscription: Subscription): void {
+    if (!confirm(`Supprimer l'abonnement #${subscription.id} ?`)) return;
+
+    this.subscriptionService.delete(subscription.id).subscribe({
+      next: () =>
+        (this.subscriptions = this.subscriptions.filter((item) => item.id !== subscription.id)),
+      error: () => (this.errorMessage = "Impossible de supprimer l'abonnement."),
+    });
+  }
 }

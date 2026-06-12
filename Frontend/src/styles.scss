@@ -2,25 +2,37 @@
 @import 'bootstrap-icons/font/bootstrap-icons.css';
 
 :root {
-  --mc-primary: #1867c0;
-  --mc-primary-dark: #1f5592;
-  --mc-secondary: #48a9a6;
-  --mc-accent: #ef534f;
-  --mc-purple: #8f4de8;
-  --mc-orange: #ff9a1f;
-  --mc-bg: #f5f7fb;
+  --mc-primary: #2563eb;
+  --mc-primary-dark: #1d4ed8;
+  --mc-secondary: #06b6d4;
+  --mc-accent: #ff3b30;
+  --mc-purple: #7c3aed;
+  --mc-orange: #f59e0b;
+  --mc-bg: #f6f8fb;
   --mc-surface: #ffffff;
-  --mc-text: #1a1a2e;
-  --mc-muted: #6b7280;
-  --mc-radius: 16px;
-  --mc-shadow: 0 8px 30px rgba(24, 103, 192, 0.08);
+  --mc-surface-soft: #f8fafc;
+  --mc-text: #0f172a;
+  --mc-muted: #64748b;
+  --mc-border: #e2e8f0;
+  --mc-radius: 18px;
+  --mc-radius-sm: 12px;
+  --mc-shadow: 0 18px 55px rgba(15, 23, 42, 0.08);
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  background: var(--mc-bg);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.08), transparent 32rem),
+    linear-gradient(180deg, #fbfdff 0%, var(--mc-bg) 36rem);
   color: var(--mc-text);
+  letter-spacing: 0;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 a {
@@ -32,6 +44,18 @@ a:hover {
   color: var(--mc-primary-dark);
 }
 
+.btn {
+  border-radius: 12px;
+  font-weight: 700;
+  letter-spacing: 0;
+  min-height: 38px;
+}
+
+.btn-lg {
+  min-height: 48px;
+  padding-inline: 1.1rem;
+}
+
 .btn-primary {
   --bs-btn-bg: var(--mc-primary);
   --bs-btn-border-color: var(--mc-primary);
@@ -40,44 +64,101 @@ a:hover {
 }
 
 .btn-accent {
-  background: linear-gradient(135deg, var(--mc-accent), #ff7043);
+  background: linear-gradient(135deg, #ff4d45, #ff7a59);
   border: none;
   color: #fff;
-  font-weight: 600;
+  box-shadow: 0 14px 30px rgba(255, 59, 48, 0.2);
 }
 
 .btn-accent:hover {
   color: #fff;
-  opacity: 0.92;
+  transform: translateY(-1px);
 }
 
-.card {
-  border: 1px solid rgba(24, 103, 192, 0.08);
+.btn-soft {
+  color: #0f172a;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.btn-soft:hover {
+  background: #f8fafc;
+}
+
+.card,
+.form-card,
+.table-responsive.card {
+  border: 1px solid var(--mc-border);
   border-radius: var(--mc-radius);
   box-shadow: var(--mc-shadow);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.form-control,
+.form-select {
+  min-height: 42px;
+  border-radius: 12px;
+  border-color: #dbe3ef;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: rgba(37, 99, 235, 0.55);
+  box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.12);
+}
+
+.table {
+  --bs-table-bg: transparent;
 }
 
 .table thead th {
-  background: #eef4fb;
-  font-size: 0.8rem;
+  background: #f8fafc;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0;
   color: var(--mc-muted);
-  border-bottom: none;
+  border-bottom: 1px solid var(--mc-border);
+}
+
+.table tbody td {
+  border-color: #eef2f7;
+  color: #334155;
 }
 
 .badge {
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-weight: 700;
+  letter-spacing: 0;
+  border-radius: 999px;
 }
 
 .section-title {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: clamp(1.35rem, 2vw, 1.75rem);
+  font-weight: 800;
   margin-bottom: 0.25rem;
+  color: var(--mc-text);
 }
 
 .section-subtitle {
   color: var(--mc-muted);
   margin-bottom: 1.5rem;
+}
+
+.alert {
+  border-radius: 14px;
+  border: 0;
+}
+
+img {
+  max-width: 100%;
+}
+
+@media (max-width: 575px) {
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .table-responsive.card {
+    border-radius: 14px;
+  }
 }

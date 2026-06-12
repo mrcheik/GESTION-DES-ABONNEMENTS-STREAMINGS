@@ -3,9 +3,56 @@
   subtitle="Toutes les offres disponibles sur MR CHEIK"
 />
 
+@if (successMessage) {
+  <div class="alert alert-success">{{ successMessage }}</div>
+}
 @if (errorMessage) {
   <div class="alert alert-danger">{{ errorMessage }}</div>
-} @else if (plans.length === 0) {
+}
+
+<div class="card form-card mb-4">
+  <div class="card-body p-4">
+    <h2 class="h5 mb-3">{{ editingPlan ? 'Modifier le forfait' : 'Ajouter un forfait' }}</h2>
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="row g-3">
+        <div class="col-md-3">
+          <label class="form-label" for="plan-provider">Fournisseur</label>
+          <select id="plan-provider" class="form-select" formControlName="provider">
+            <option value="" disabled>Sélectionner</option>
+            @for (provider of providers; track provider.id) {
+              <option [value]="provider.id">{{ provider.name }}</option>
+            }
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label" for="plan-name">Nom</label>
+          <input id="plan-name" class="form-control" formControlName="name" />
+        </div>
+        <div class="col-md-3">
+          <label class="form-label" for="plan-price">Prix (FCFA)</label>
+          <input id="plan-price" type="text" class="form-control" formControlName="price" />
+        </div>
+        <div class="col-md-3">
+          <label class="form-label" for="plan-duration">Durée (jours)</label>
+          <input id="plan-duration" type="number" min="1" class="form-control" formControlName="duration_days" />
+        </div>
+      </div>
+      @if (form.touched && form.invalid) {
+        <small class="text-danger d-block mt-2">Veuillez renseigner un fournisseur, un nom, un prix valide et une durée positive.</small>
+      }
+      <div class="d-flex gap-2 mt-3">
+        <button class="btn btn-accent" type="submit">
+          {{ editingPlan ? 'Enregistrer' : 'Ajouter' }}
+        </button>
+        @if (editingPlan) {
+          <button class="btn btn-outline-secondary" type="button" (click)="cancelEdit()">Annuler</button>
+        }
+      </div>
+    </form>
+  </div>
+</div>
+
+@if (plans.length === 0) {
   <div class="card text-center py-5 text-muted">Aucun forfait disponible pour le moment.</div>
 } @else {
   <div class="row g-4">
@@ -16,6 +63,10 @@
           [providerName]="getProviderName(plan)"
           [logoUrl]="getLogoUrl(plan)"
         />
+        <div class="d-flex gap-2 mt-2">
+          <button class="btn btn-sm btn-outline-secondary flex-fill" type="button" (click)="edit(plan)">Modifier</button>
+          <button class="btn btn-sm btn-outline-danger flex-fill" type="button" (click)="delete(plan)">Supprimer</button>
+        </div>
       </div>
     }
   </div>

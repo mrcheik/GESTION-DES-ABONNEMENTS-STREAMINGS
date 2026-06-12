@@ -8,3 +8,10 @@ export interface Plan {
   price: string;
   duration_days: number;
 }
+
+export interface PlanPayload {
+  provider: number;
+  name: string;
+  price: string;
+  duration_days: number;
+}

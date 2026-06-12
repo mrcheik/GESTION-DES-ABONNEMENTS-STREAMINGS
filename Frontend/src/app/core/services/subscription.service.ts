@@ -10,14 +10,14 @@ import {
 @Injectable({ providedIn: 'root' })
 export class SubscriptionService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = `${environment.apiUrl}/subscriptions`;
+  private readonly baseUrl = `${environment.apiUrl}/subscriptions/`;
 
   getAll(): Observable<Subscription[]> {
     return this.http.get<Subscription[]>(this.baseUrl);
   }
 
   getById(id: number): Observable<Subscription> {
-    return this.http.get<Subscription>(`${this.baseUrl}/${id}/`);
+    return this.http.get<Subscription>(`${this.baseUrl}${id}/`);
   }
 
   create(payload: SubscriptionPayload): Observable<Subscription> {
@@ -28,6 +28,10 @@ export class SubscriptionService {
     id: number,
     payload: Partial<SubscriptionPayload>
   ): Observable<Subscription> {
-    return this.http.patch<Subscription>(`${this.baseUrl}/${id}/`, payload);
+    return this.http.patch<Subscription>(`${this.baseUrl}${id}/`, payload);
+  }
+
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}${id}/`);
   }
 }

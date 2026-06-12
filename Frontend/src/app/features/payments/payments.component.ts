@@ -56,4 +56,13 @@ export class PaymentsComponent implements OnInit {
   getSubscriptionLabel(id: number): string {
     return this.subscriptionLabelMap.get(id) ?? `Abonnement #${id}`;
   }
+
+  delete(payment: Payment): void {
+    if (!confirm(`Supprimer le paiement ${payment.transaction_id} ?`)) return;
+
+    this.paymentService.delete(payment.id).subscribe({
+      next: () => (this.payments = this.payments.filter((item) => item.id !== payment.id)),
+      error: () => (this.errorMessage = 'Impossible de supprimer le paiement.'),
+    });
+  }
 }

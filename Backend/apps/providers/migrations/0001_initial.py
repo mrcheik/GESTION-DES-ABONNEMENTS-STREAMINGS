@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=100)),
-                ('logo', models.ImageField(upload_to='providers/')),
+                ('logo', models.ImageField(blank=True, null=True, upload_to='providers/')),
                 ('description', models.TextField(blank=True)),
             ],
         ),

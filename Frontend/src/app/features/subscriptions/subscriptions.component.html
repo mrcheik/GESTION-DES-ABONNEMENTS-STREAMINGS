@@ -34,6 +34,7 @@
                 <a class="btn btn-sm btn-outline-success" [routerLink]="['/payments/new']" [queryParams]="{ subscriptionId: sub.id }">Payer</a>
               }
               <a class="btn btn-sm btn-outline-secondary" [routerLink]="['/subscriptions', sub.id, 'edit']">Modifier</a>
+              <button class="btn btn-sm btn-outline-danger" type="button" (click)="delete(sub)">Supprimer</button>
             </td>
           </tr>
         } @empty {

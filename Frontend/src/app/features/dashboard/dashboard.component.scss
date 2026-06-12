@@ -2,10 +2,20 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 1.25rem;
+  min-height: 112px;
+  padding: 1.15rem;
   border-radius: var(--mc-radius);
   background: var(--mc-surface);
-  border: 1px solid rgba(24, 103, 192, 0.08);
+  border: 1px solid var(--mc-border);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.05);
+  color: var(--mc-text);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    color: var(--mc-text);
+    transform: translateY(-3px);
+    box-shadow: 0 22px 46px rgba(15, 23, 42, 0.09);
+  }
 }
 
 .stat-icon {
@@ -13,20 +23,41 @@
   height: 3rem;
   display: grid;
   place-items: center;
-  border-radius: 12px;
+  border-radius: 14px;
   font-size: 1.25rem;
+}
+
+.stat-icon--blue {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.stat-icon--cyan {
+  background: #ecfeff;
+  color: #0891b2;
+}
+
+.stat-icon--red {
+  background: #fff1f2;
+  color: #e11d48;
+}
+
+.stat-icon--violet {
+  background: #f5f3ff;
+  color: #7c3aed;
 }
 
 .stat-label {
   margin: 0;
   color: var(--mc-muted);
   font-size: 0.9rem;
+  font-weight: 700;
 }
 
 .stat-value {
   margin: 0.15rem 0 0;
-  font-size: 1.75rem;
-  font-weight: 700;
+  font-size: 1.85rem;
+  font-weight: 850;
 }
 
 .workflow-card {
@@ -41,19 +72,30 @@
 }
 
 .workflow-step {
-  padding: 0.5rem 1rem;
-  border-radius: 10px;
-  background: rgba(24, 103, 192, 0.08);
-  color: var(--mc-primary);
-  font-weight: 600;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #334155;
+  font-weight: 750;
   font-size: 0.9rem;
   text-decoration: none;
 
   &:hover {
-    background: rgba(24, 103, 192, 0.15);
+    background: #e0f2fe;
+    color: #075985;
   }
 }
 
 .workflow-steps i {
   color: var(--mc-muted);
+}
+
+@media (max-width: 575px) {
+  .workflow-steps {
+    display: grid;
+  }
+
+  .workflow-steps i {
+    display: none;
+  }
 }

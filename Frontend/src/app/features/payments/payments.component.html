@@ -31,8 +31,9 @@
               <span class="badge text-bg-{{ statusClass(payment.status) }}">{{ labelStatus(payment.status) }}</span>
             </td>
             <td>{{ payment.created_at | date: 'short' }}</td>
-            <td class="text-end">
+            <td class="text-end d-flex gap-1 justify-content-end">
               <a class="btn btn-sm btn-outline-secondary" [routerLink]="['/payments', payment.id, 'edit']">Modifier</a>
+              <button class="btn btn-sm btn-outline-danger" type="button" (click)="delete(payment)">Supprimer</button>
             </td>
           </tr>
         } @empty {

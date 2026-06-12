@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard, guestGuard } from './core/guards/auth.guard';
+import { adminGuard, authGuard, guestGuard } from './core/guards/auth.guard';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 
 export const routes: Routes = [
@@ -30,6 +30,12 @@ export const routes: Routes = [
         path: 'dashboard',
         loadComponent: () =>
           import('./features/dashboard/dashboard.component').then((m) => m.DashboardComponent),
+      },
+      {
+        path: 'admin',
+        canActivate: [adminGuard],
+        loadComponent: () =>
+          import('./features/admin/admin-dashboard.component').then((m) => m.AdminDashboardComponent),
       },
       {
         path: 'providers',
@@ -99,6 +105,18 @@ export const routes: Routes = [
           import('./features/payments/payment-form/payment-form.component').then(
             (m) => m.PaymentFormComponent
           ),
+      },
+      {
+        path: 'credentials',
+        loadComponent: () =>
+          import('./features/account/credentials/credentials.component').then(
+            (m) => m.CredentialsComponent
+          ),
+      },
+      {
+        path: 'support',
+        loadComponent: () =>
+          import('./features/account/support/support.component').then((m) => m.SupportComponent),
       },
     ],
   },

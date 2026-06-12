@@ -7,14 +7,14 @@ import { Payment, PaymentPayload } from '../models/payment.model';
 @Injectable({ providedIn: 'root' })
 export class PaymentService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = `${environment.apiUrl}/payments`;
+  private readonly baseUrl = `${environment.apiUrl}/payments/`;
 
   getAll(): Observable<Payment[]> {
     return this.http.get<Payment[]>(this.baseUrl);
   }
 
   getById(id: number): Observable<Payment> {
-    return this.http.get<Payment>(`${this.baseUrl}/${id}/`);
+    return this.http.get<Payment>(`${this.baseUrl}${id}/`);
   }
 
   create(payload: PaymentPayload): Observable<Payment> {
@@ -22,6 +22,10 @@ export class PaymentService {
   }
 
   update(id: number, payload: Partial<PaymentPayload>): Observable<Payment> {
-    return this.http.patch<Payment>(`${this.baseUrl}/${id}/`, payload);
+    return this.http.patch<Payment>(`${this.baseUrl}${id}/`, payload);
+  }
+
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}${id}/`);
   }
 }

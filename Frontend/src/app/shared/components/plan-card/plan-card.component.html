@@ -1,6 +1,6 @@
 <article class="spu-card">
   <div class="spu-card__header">
-    <img class="spu-card__logo" [src]="displayLogo" [alt]="providerName" />
+    <img class="spu-card__logo" [src]="displayLogo" [alt]="providerName" (error)="onLogoError($event)" />
     <div>
       <p class="spu-card__provider">{{ providerName }}</p>
       <h3 class="spu-card__title">{{ plan.name }}</h3>

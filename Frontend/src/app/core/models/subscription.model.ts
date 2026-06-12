@@ -4,6 +4,7 @@ export interface Subscription {
   id: number;
   user: number;
   plan: number;
+  plan_details?: import('./plan.model').Plan;
   start_date: string;
   end_date: string;
   status: SubscriptionStatus;

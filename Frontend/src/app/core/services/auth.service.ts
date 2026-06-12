@@ -7,6 +7,7 @@ import {
   AuthTokens,
   LoginRequest,
   RegisterRequest,
+  UserRole,
 } from '../models/auth.model';
 
 const ACCESS_TOKEN_KEY = 'access_token';
@@ -16,17 +17,17 @@ const REFRESH_TOKEN_KEY = 'refresh_token';
 export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
-  private readonly baseUrl = `${environment.apiUrl}/users`;
+  private readonly baseUrl = `${environment.apiUrl}/users/`;
 
   login(credentials: LoginRequest): Observable<AuthTokens> {
     return this.http
-      .post<AuthTokens>(`${this.baseUrl}/login`, credentials)
+      .post<AuthTokens>(`${this.baseUrl}login/`, credentials)
       .pipe(tap((tokens) => this.storeTokens(tokens)));
   }
 
   register(payload: RegisterRequest): Observable<{ id: number; username: string; email: string }> {
     return this.http.post<{ id: number; username: string; email: string }>(
-      `${this.baseUrl}/register`,
+      `${this.baseUrl}register/`,
       payload
     );
   }
@@ -61,6 +62,21 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     return !!this.getAccessToken();
+  }
+
+  getRole(): UserRole {
+    const token = this.getAccessToken();
+    if (!token) return 'CLIENT';
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1])) as { role?: UserRole };
+      return payload.role === 'ADMIN' ? 'ADMIN' : 'CLIENT';
+    } catch {
+      return 'CLIENT';
+    }
+  }
+
+  isAdmin(): boolean {
+    return this.getRole() === 'ADMIN';
   }
 
   private storeTokens(tokens: AuthTokens): void {

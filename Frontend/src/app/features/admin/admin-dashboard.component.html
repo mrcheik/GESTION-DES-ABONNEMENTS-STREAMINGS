@@ -1,0 +1,200 @@
+<app-page-header title="Back Office Administrateur" subtitle="Pilotage complet des utilisateurs, commandes, paiements et livraisons">
+  <button class="btn btn-soft" type="button" (click)="loadAll()">
+    <i class="bi bi-arrow-clockwise me-1"></i>Actualiser
+  </button>
+</app-page-header>
+
+@if (successMessage) {
+  <div class="alert alert-success">{{ successMessage }}</div>
+}
+@if (errorMessage) {
+  <div class="alert alert-danger">{{ errorMessage }}</div>
+}
+
+<div class="admin-shell">
+  <aside class="admin-tabs">
+    @for (tab of tabs; track tab.id) {
+      <button type="button" [class.active]="activeTab === tab.id" (click)="setTab(tab.id)">
+        <i class="bi" [class]="tab.icon"></i>
+        <span>{{ tab.label }}</span>
+      </button>
+    }
+  </aside>
+
+  <section class="admin-panel">
+    @if (loading) {
+      <div class="admin-empty">Chargement du back-office...</div>
+    } @else if (activeTab === 'overview') {
+      <div class="stats-grid">
+        <div class="stat-card"><span>Utilisateurs</span><strong>{{ stats.users }}</strong></div>
+        <div class="stat-card"><span>Commandes</span><strong>{{ stats.orders }}</strong></div>
+        <div class="stat-card"><span>Paiements</span><strong>{{ stats.payments }}</strong></div>
+        <div class="stat-card"><span>Abonnements actifs</span><strong>{{ stats.active_subscriptions }}</strong></div>
+        <div class="stat-card stat-card--wide"><span>Revenus confirmés</span><strong>{{ revenueNumber() }} FCFA</strong></div>
+        <div class="stat-card"><span>Commandes en attente</span><strong>{{ stats.pending_orders }}</strong></div>
+        <div class="stat-card"><span>Paiements en attente</span><strong>{{ stats.pending_payments }}</strong></div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-card__header">
+          <h2>Vue statistique</h2>
+          <span>Activité globale</span>
+        </div>
+        <div class="bar-chart">
+          <div class="bar"><span [style.height]="chartHeight(stats.users)"></span><em>Users</em></div>
+          <div class="bar"><span [style.height]="chartHeight(stats.orders)"></span><em>Orders</em></div>
+          <div class="bar"><span [style.height]="chartHeight(stats.payments)"></span><em>Payments</em></div>
+          <div class="bar"><span [style.height]="chartHeight(stats.active_subscriptions)"></span><em>Active</em></div>
+        </div>
+      </div>
+    } @else if (activeTab === 'users') {
+      <div class="table-responsive admin-table">
+        <table class="table align-middle">
+          <thead><tr><th>Utilisateur</th><th>Rôle</th><th>Statut</th><th>Commandes</th><th>Total payé</th><th></th></tr></thead>
+          <tbody>
+            @for (user of users; track user.id) {
+              <tr>
+                <td><strong>{{ user.username }}</strong><br><small>{{ user.email || 'Email non renseigné' }}</small></td>
+                <td><span class="badge text-bg-{{ user.role === 'ADMIN' ? 'primary' : 'secondary' }}">{{ user.role }}</span></td>
+                <td><span class="badge text-bg-{{ user.is_active ? 'success' : 'danger' }}">{{ user.is_active ? 'Actif' : 'Inactif' }}</span></td>
+                <td>{{ user.orders_count }}</td>
+                <td>{{ user.payments_total }} FCFA</td>
+                <td class="actions">
+                  <button class="btn btn-sm btn-outline-primary" type="button" (click)="toggleRole(user)">Changer rôle</button>
+                  @if (user.is_active) {
+                    <button class="btn btn-sm btn-outline-warning" type="button" (click)="deactivateUser(user)">Désactiver</button>
+                  } @else {
+                    <button class="btn btn-sm btn-outline-success" type="button" (click)="activateUser(user)">Activer</button>
+                  }
+                  <button class="btn btn-sm btn-outline-danger" type="button" (click)="deleteUser(user)">Supprimer</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else if (activeTab === 'orders') {
+      <div class="table-responsive admin-table">
+        <table class="table align-middle">
+          <thead><tr><th>#</th><th>Client</th><th>Forfait</th><th>Montant</th><th>Statut</th><th></th></tr></thead>
+          <tbody>
+            @for (order of orders; track order.id) {
+              <tr>
+                <td>#{{ order.id }}</td>
+                <td>{{ order.username }}</td>
+                <td>{{ order.plan_details?.name || ('Forfait #' + order.plan) }}</td>
+                <td>{{ order.amount }} FCFA</td>
+                <td>
+                  <select class="form-select form-select-sm" [value]="order.status" (change)="changeOrderStatus(order, $any($event.target).value)">
+                    <option value="pending">En attente</option>
+                    <option value="paid">Validée</option>
+                    <option value="cancelled">Refusée</option>
+                  </select>
+                </td>
+                <td class="actions">
+                  <button class="btn btn-sm btn-outline-success" type="button" (click)="validateOrder(order)">Valider</button>
+                  <button class="btn btn-sm btn-outline-danger" type="button" (click)="refuseOrder(order)">Refuser</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else if (activeTab === 'payments') {
+      <div class="stats-grid stats-grid--compact">
+        <div class="stat-card"><span>Paiements</span><strong>{{ stats.payments }}</strong></div>
+        <div class="stat-card"><span>En attente</span><strong>{{ stats.pending_payments }}</strong></div>
+        <div class="stat-card"><span>Revenus</span><strong>{{ revenueNumber() }} FCFA</strong></div>
+      </div>
+      <div class="table-responsive admin-table">
+        <table class="table align-middle">
+          <thead><tr><th>Transaction</th><th>Client</th><th>Montant</th><th>Méthode</th><th>Statut</th><th></th></tr></thead>
+          <tbody>
+            @for (payment of payments; track payment.id) {
+              <tr>
+                <td><code>{{ payment.transaction_id }}</code></td>
+                <td>{{ payment.username }}</td>
+                <td>{{ payment.amount }} FCFA</td>
+                <td>{{ payment.payment_method }}</td>
+                <td><span class="badge text-bg-info">{{ payment.status }}</span></td>
+                <td class="actions">
+                  <button class="btn btn-sm btn-outline-success" type="button" (click)="confirmPayment(payment)">Confirmer</button>
+                  <button class="btn btn-sm btn-outline-danger" type="button" (click)="failPayment(payment)">Échec</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else if (activeTab === 'credentials') {
+      <div class="delivery-grid">
+        <form class="delivery-form" [formGroup]="credentialForm" (ngSubmit)="createCredential()">
+          <h2>Livrer des identifiants</h2>
+          <select class="form-select" formControlName="subscription">
+            <option value="" disabled>Abonnement actif</option>
+            @for (sub of subscriptions; track sub.id) {
+              <option [value]="sub.id">#{{ sub.id }} - {{ sub.plan_details?.provider_details?.name || 'Service' }} / {{ sub.plan_details?.name || sub.plan }}</option>
+            }
+          </select>
+          <input class="form-control" placeholder="Service: Netflix, Spotify..." formControlName="service_name" />
+          <input class="form-control" placeholder="Identifiant / email" formControlName="login_identifier" />
+          <input class="form-control" placeholder="Mot de passe" formControlName="password" />
+          <input class="form-control" placeholder="Profil (optionnel)" formControlName="profile_name" />
+          <textarea class="form-control" rows="3" placeholder="Notes" formControlName="notes"></textarea>
+          <button class="btn btn-accent" type="submit">Livrer</button>
+        </form>
+
+        <div class="credential-list">
+          @for (credential of credentials; track credential.id) {
+            <article class="credential-card">
+              <div>
+                <strong>{{ credential.service_name }}</strong>
+                <p>{{ credential.subscription_details?.plan_details?.name || 'Abonnement #' + credential.subscription }}</p>
+              </div>
+              <code>{{ credential.login_identifier }}</code>
+              <button class="btn btn-sm btn-outline-danger" type="button" (click)="deleteCredential(credential)">Supprimer</button>
+            </article>
+          } @empty {
+            <div class="admin-empty">Aucune livraison pour le moment.</div>
+          }
+        </div>
+      </div>
+    } @else if (activeTab === 'messages') {
+      <div class="messages-layout">
+        <aside class="thread-list">
+          @for (thread of threads; track thread.id) {
+            <button type="button" [class.active]="selectedThread?.id === thread.id" (click)="selectThread(thread)">
+              <strong>{{ thread.subject }}</strong>
+              <span>{{ thread.user_username }} - {{ thread.status }}</span>
+            </button>
+          } @empty {
+            <div class="admin-empty">Aucune conversation.</div>
+          }
+        </aside>
+        <section class="thread-detail">
+          @if (selectedThread) {
+            <div class="thread-header">
+              <div><h2>{{ selectedThread.subject }}</h2><span>{{ selectedThread.user_username }}</span></div>
+              <button class="btn btn-sm btn-outline-secondary" type="button" (click)="closeThread(selectedThread)">Fermer</button>
+            </div>
+            <div class="message-stack">
+              @for (message of selectedThread.messages; track message.id) {
+                <div class="message" [class.from-admin]="message.sender_role === 'ADMIN'">
+                  <strong>{{ message.sender_username }}</strong>
+                  <p>{{ message.body }}</p>
+                  <small>{{ message.created_at | date: 'short' }}</small>
+                </div>
+              }
+            </div>
+            <form class="reply-form" [formGroup]="replyForm" (ngSubmit)="reply()">
+              <input class="form-control" placeholder="Répondre au client..." formControlName="body" />
+              <button class="btn btn-accent" type="submit">Envoyer</button>
+            </form>
+          } @else {
+            <div class="admin-empty">Sélectionnez une conversation.</div>
+          }
+        </section>
+      </div>
+    }
+  </section>
+</div>

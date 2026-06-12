@@ -42,6 +42,9 @@
               <a class="btn btn-sm btn-outline-secondary" [routerLink]="['/orders', order.id, 'edit']">
                 Modifier
               </a>
+              <button class="btn btn-sm btn-outline-danger" type="button" (click)="delete(order)">
+                Supprimer
+              </button>
             </td>
           </tr>
         } @empty {

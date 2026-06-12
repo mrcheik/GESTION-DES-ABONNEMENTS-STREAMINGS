@@ -3,7 +3,6 @@ from rest_framework.exceptions import ValidationError
 from .models import Payment
 from .serializers import PaymentSerializer
 from rest_framework.permissions import IsAuthenticated
-from apps.subscriptions.models import Subscription
 
 
 class PaymentListCreateView(generics.ListCreateAPIView):
@@ -20,7 +19,7 @@ class PaymentListCreateView(generics.ListCreateAPIView):
         serializer.save(user=self.request.user)
 
 
-class PaymentDetailView(generics.RetrieveUpdateAPIView):
+class PaymentDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PaymentSerializer
     permission_classes = [IsAuthenticated]
 

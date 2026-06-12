@@ -1,0 +1,50 @@
+<app-page-header title="Support" subtitle="Messagerie interne avec l'administration" />
+
+@if (successMessage) {
+  <div class="alert alert-success">{{ successMessage }}</div>
+}
+@if (errorMessage) {
+  <div class="alert alert-danger">{{ errorMessage }}</div>
+}
+
+<div class="support-layout">
+  <aside class="support-sidebar">
+    <form [formGroup]="threadForm" (ngSubmit)="createThread()" class="new-thread">
+      <input class="form-control" placeholder="Nouveau sujet" formControlName="subject" />
+      <button class="btn btn-accent" type="submit">Créer</button>
+    </form>
+
+    @for (thread of threads; track thread.id) {
+      <button type="button" [class.active]="selectedThread?.id === thread.id" (click)="selectThread(thread)">
+        <strong>{{ thread.subject }}</strong>
+        <span>{{ thread.status === 'open' ? 'Ouverte' : 'Fermée' }}</span>
+      </button>
+    }
+  </aside>
+
+  <section class="support-thread">
+    @if (selectedThread) {
+      <header>
+        <h2>{{ selectedThread.subject }}</h2>
+        <span>{{ selectedThread.messages.length }} message(s)</span>
+      </header>
+      <div class="message-stack">
+        @for (message of selectedThread.messages; track message.id) {
+          <div class="message" [class.from-admin]="message.sender_role === 'ADMIN'">
+            <strong>{{ message.sender_username }}</strong>
+            <p>{{ message.body }}</p>
+            <small>{{ message.created_at | date: 'short' }}</small>
+          </div>
+        } @empty {
+          <div class="empty-state">Écrivez le premier message.</div>
+        }
+      </div>
+      <form class="reply-form" [formGroup]="messageForm" (ngSubmit)="sendMessage()">
+        <input class="form-control" placeholder="Votre message..." formControlName="body" />
+        <button class="btn btn-accent" type="submit">Envoyer</button>
+      </form>
+    } @else {
+      <div class="empty-state">Créez une conversation pour contacter l'administration.</div>
+    }
+  </section>
+</div>

@@ -45,4 +45,13 @@ export class OrdersComponent implements OnInit {
   getPlanName(planId: number): string {
     return this.planMap.get(planId) ?? `Forfait #${planId}`;
   }
+
+  delete(order: Order): void {
+    if (!confirm(`Supprimer la commande #${order.id} ?`)) return;
+
+    this.orderService.delete(order.id).subscribe({
+      next: () => (this.orders = this.orders.filter((item) => item.id !== order.id)),
+      error: () => (this.errorMessage = 'Impossible de supprimer la commande.'),
+    });
+  }
 }

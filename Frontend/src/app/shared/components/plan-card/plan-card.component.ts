@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Plan } from '../../../core/models/plan.model';
-import { resolveLogoUrl } from '../../../core/utils/media.util';
+import { DEFAULT_LOGO_URL, resolveLogoUrl } from '../../../core/utils/media.util';
 
 @Component({
   selector: 'app-plan-card',
@@ -24,5 +24,10 @@ export class PlanCardComponent {
 
   get priceLabel(): string {
     return `${this.plan.price} FCFA`;
+  }
+
+  onLogoError(event: Event): void {
+    const image = event.target as HTMLImageElement;
+    image.src = DEFAULT_LOGO_URL;
   }
 }

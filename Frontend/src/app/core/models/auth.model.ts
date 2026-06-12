@@ -12,4 +12,9 @@ export interface RegisterRequest {
 export interface AuthTokens {
   access: string;
   refresh: string;
+  role?: UserRole;
+  username?: string;
+  email?: string;
 }
+
+export type UserRole = 'ADMIN' | 'CLIENT';

@@ -5,6 +5,7 @@ export interface Payment {
   id: number;
   user: number;
   subscription: number;
+  subscription_details?: import('./subscription.model').Subscription;
   amount: string;
   payment_method: PaymentMethod;
   status: PaymentStatus;

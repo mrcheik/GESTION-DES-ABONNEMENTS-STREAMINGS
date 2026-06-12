@@ -1,12 +1,16 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { forkJoin } from 'rxjs';
+import { AuthService } from '../../core/services/auth.service';
+import { OrderService } from '../../core/services/order.service';
+import { PaymentService } from '../../core/services/payment.service';
 import { PlanService } from '../../core/services/plan.service';
 import { ProviderService } from '../../core/services/provider.service';
+import { SubscriptionService } from '../../core/services/subscription.service';
 import { Plan } from '../../core/models/plan.model';
 import { Provider } from '../../core/models/provider.model';
 import { PlanCardComponent } from '../../shared/components/plan-card/plan-card.component';
-import { resolveLogoUrl } from '../../core/utils/media.util';
+import { DEFAULT_LOGO_URL, resolveLogoUrl } from '../../core/utils/media.util';
 
 @Component({
   selector: 'app-home',
@@ -16,14 +20,19 @@ import { resolveLogoUrl } from '../../core/utils/media.util';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
+  private readonly authService = inject(AuthService);
+  private readonly orderService = inject(OrderService);
+  private readonly paymentService = inject(PaymentService);
   private readonly planService = inject(PlanService);
   private readonly providerService = inject(ProviderService);
+  private readonly subscriptionService = inject(SubscriptionService);
 
   plans: Plan[] = [];
   providers: Provider[] = [];
   providerMap = new Map<number, Provider>();
   errorMessage = '';
   loading = true;
+  stats = { orders: 0, subscriptions: 0, payments: 0, plans: 0 };
 
   readonly features = [
     {
@@ -54,13 +63,22 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     forkJoin({
+      orders: this.orderService.getAll(),
+      subscriptions: this.subscriptionService.getAll(),
+      payments: this.paymentService.getAll(),
       plans: this.planService.getAll(),
       providers: this.providerService.getAll(),
     }).subscribe({
-      next: ({ plans, providers }) => {
+      next: ({ orders, subscriptions, payments, plans, providers }) => {
         this.plans = plans;
         this.providers = providers;
         this.providerMap = new Map(providers.map((p) => [p.id, p]));
+        this.stats = {
+          orders: orders.length,
+          subscriptions: subscriptions.length,
+          payments: payments.length,
+          plans: plans.length,
+        };
         this.loading = false;
       },
       error: () => {
@@ -80,5 +98,18 @@ export class HomeComponent implements OnInit {
 
   getProviderLogo(provider: Provider): string {
     return resolveLogoUrl(provider.logo_url, provider.name);
+  }
+
+  onLogoError(event: Event): void {
+    const image = event.target as HTMLImageElement;
+    image.src = DEFAULT_LOGO_URL;
+  }
+
+  get isAuthenticated(): boolean {
+    return this.authService.isAuthenticated();
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 }
